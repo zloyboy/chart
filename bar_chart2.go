@@ -237,20 +237,24 @@ func (bc BarChart2) drawXAxis(r Renderer, canvasBox Box) {
 
 		cursor := canvasBox.Left
 		for _, bar := range bc.Bars {
-			var bottom, top int
+			var bottom, top [2]int
 			if bc.LabelFirst {
-				bottom = bc.LabelTop
-				top = bc.LabelTop + bc.SubLabelTop
+				top[0] = canvasBox.Bottom + DefaultXAxisMargin
+				bottom[0] = top[0] + bc.LabelTop
+				top[1] = bottom[0]
+				bottom[1] = top[1] + bc.SubLabelTop
 			} else {
-				bottom = bc.LabelTop + bc.SubLabelTop
-				top = bc.LabelTop
+				top[1] = canvasBox.Bottom + DefaultXAxisMargin
+				bottom[1] = top[1] + bc.SubLabelTop
+				top[0] = bottom[1]
+				bottom[0] = top[0] + bc.LabelTop
 			}
 
 			barLabelBox := Box{
-				Top:    canvasBox.Bottom + bottom,
+				Top:    top[0],
 				Left:   cursor,
 				Right:  cursor + width + spacing,
-				Bottom: bc.GetHeight(),
+				Bottom: bottom[0],
 			}
 			if len(bar.Label) > 0 {
 				Draw.TextWithin(r, bar.Label, barLabelBox, axisStyle)
@@ -258,10 +262,10 @@ func (bc BarChart2) drawXAxis(r Renderer, canvasBox Box) {
 			axisStyle.WriteToRenderer(r)
 
 			barLabelBox0 := Box{
-				Top:    canvasBox.Bottom + top,
+				Top:    top[1],
 				Left:   cursor,
 				Right:  cursor + width/2,
-				Bottom: canvasBox.Bottom + bottom,
+				Bottom: bottom[1],
 			}
 			if len(bar.Lab[0]) > 0 {
 				Draw.TextWithin(r, bar.Lab[0], barLabelBox0, axisStyle)
@@ -269,10 +273,10 @@ func (bc BarChart2) drawXAxis(r Renderer, canvasBox Box) {
 			axisStyle.WriteToRenderer(r)
 
 			barLabelBox1 := Box{
-				Top:    canvasBox.Bottom + top,
+				Top:    top[1],
 				Left:   cursor + width/2,
 				Right:  cursor + width + spacing,
-				Bottom: canvasBox.Bottom + bottom,
+				Bottom: bottom[1],
 			}
 			if len(bar.Lab[1]) > 0 {
 				Draw.TextWithin(r, bar.Lab[1], barLabelBox1, axisStyle)
