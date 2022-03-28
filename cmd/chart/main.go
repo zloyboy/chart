@@ -9,8 +9,8 @@ import (
 
 func main() {
 	values := []chart.DoubleValue{
-		{Label: "ill", Lab: [2]string{"M 55.00 %", "F 25.00 %"}, Val: [2]float64{0.55, 0.25}},
-		{Label: "vac", Lab: [2]string{"M 45.00 %", "F 65.00 %"}, Val: [2]float64{0.45, 0.65}},
+		{Label: "ill", Lab: [2]string{"M\n55.00 %", "F\n25.00 %"}, Val: [2]float64{0.55, 0.25}},
+		{Label: "vac", Lab: [2]string{"M\n45.00 %", "F\n65.00 %"}, Val: [2]float64{0.45, 0.65}},
 	}
 
 	bc := chart.BarChart2{
@@ -27,6 +27,11 @@ func main() {
 		Height:     200,
 		BarWidth:   200,
 		BarSpacing: 10,
+
+		LabelFirst:  false,
+		LabelTop:    10,
+		SubLabelTop: 30,
+
 		YAxis: chart.YAxis{
 			ValueFormatter: chart.PercentValueFormatter,
 			Range: &chart.ContinuousRange{
